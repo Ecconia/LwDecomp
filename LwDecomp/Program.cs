@@ -65,6 +65,7 @@ namespace LwDecomp
                 return;
             }
 
+            var skipPrefixes = "Microsoft.;System.;UnityEngine.;Unity.;mscorlib.;netstandard.;WindowsBase.;Newtonsoft.Json.Unity.".Split(";");
             var serverSubpath = "Server";
             var clientSubpath = Path.Combine("Logic_World_Data", "Managed");
 
@@ -72,17 +73,12 @@ namespace LwDecomp
 
             var decompRootFolder = Path.Combine(ourFolder, "decompiled");
 
-            var serverDecompKeywords = "SUCC;Jimmy;LICC;Lidgren;Logic;TypeFinder;SECCS".Split(";");
-            var serverDecompExplicitNames = "Server.dll".Split(";");
             DecompDirectory(Path.Combine(decompRootFolder, "LWServer"), Path.Combine(lwInstallPath, serverSubpath), files => files.Where(f =>
-                f.EndsWith(".dll") && (serverDecompExplicitNames.Contains(f) || serverDecompKeywords.Any(keyword => f.Contains(keyword)))));
-
+                f.EndsWith(".dll") && !skipPrefixes.Any(keyword => f.StartsWith(keyword))));
 
             Console.WriteLine("\nDecompiling client...");
-            var clientDecompKeywords = "SUCC;Jimmy;LICC;Lidgren;Logic;TypeFinder;SECCS;FancyInput;FancyPantsConsole;GameDataAccess".Split(";");
-            var clientDecompExplicitNames = "KnifeOutline.dll".Split(";");
             DecompDirectory(Path.Combine(decompRootFolder, "LWClient"), Path.Combine(lwInstallPath, clientSubpath), files => files.Where(f =>
-                f.EndsWith(".dll") && (clientDecompExplicitNames.Contains(f) || clientDecompKeywords.Any(keyword => f.Contains(keyword)))));
+                f.EndsWith(".dll") && !skipPrefixes.Any(keyword => f.StartsWith(keyword))));
 
             Console.WriteLine("Finished successfully.");
         }
