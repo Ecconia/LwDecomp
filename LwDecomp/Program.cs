@@ -1,4 +1,4 @@
-﻿using ICSharpCode.Decompiler;
+using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.CSharp.ProjectDecompiler;
 using ICSharpCode.Decompiler.Metadata;
@@ -127,10 +127,10 @@ namespace LwDecomp
                         var decProjectId = cd.DecompileProject(module, Path.GetDirectoryName(projectFileName), projectFileWriter);
                         decSw.Stop();
                     }
-                    catch
+                    catch(Exception e)
                     {
                         Console.WriteLine("error!");
-                        throw;
+                        Console.WriteLine("\nError: " + e.Message + "\n");
                     }
                     finally
                     {
